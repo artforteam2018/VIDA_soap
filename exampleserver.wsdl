@@ -1,0 +1,72 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" name="DmsService" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface">
+    <types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xs1="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" elementFormDefault="qualified">
+            <xs:element name="DmsService">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DmsServiceResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetInterfaceCapabilitiesRequest">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetInterfaceCapabilitiesRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </types>
+    <message name="DmsServiceRequestMessage">
+        <part name="parameters" element="tns:DmsService"/>
+    </message>
+    <message name="DmsServiceResponseMessage">
+        <part name="parameters" element="tns:DmsServiceResponse"/>
+    </message>
+    <message name="GetInterfaceCapabilitiesRequestRequestMessage">
+        <part name="parameters" element="tns:GetInterfaceCapabilitiesRequest"/>
+    </message>
+    <message name="GetInterfaceCapabilitiesRequestResponseMessage">
+        <part name="parameters" element="tns:GetInterfaceCapabilitiesRequestResponse"/>
+    </message>
+    <portType name="DmsServicePortType">
+        <operation name="DmsService">
+            <input message="tns:DmsServiceRequestMessage"/>
+            <output message="tns:DmsServiceResponseMessage"/>
+        </operation>
+        <operation name="GetInterfaceCapabilitiesRequest">
+            <input message="tns:GetInterfaceCapabilitiesRequestRequestMessage"/>
+            <output message="tns:GetInterfaceCapabilitiesRequestResponseMessage"/>
+        </operation>
+    </portType>
+    <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
+        <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetInterfaceCapabilitiesRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetInterfaceCapabilitiesRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name = "DmsService">
+        <documentation>WSDL File for MyService</documentation>
+        <port binding = "tns:DmsServiceSoapBinding" name = "DmsServiceSoap">
+            <soapbind:address
+                    location = "http://localhost:8001/alfaavto_vida/ws//DmsService.1cws" />
+        </port>
+    </service>
+</definitions>

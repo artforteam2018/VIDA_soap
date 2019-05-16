@@ -1,0 +1,12 @@
+{
+  "name": "soapExp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "soap": "^0.27.1"
+  }
+}
