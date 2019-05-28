@@ -1,52 +1,1145 @@
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" name="DmsService" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" name="DmsService" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface">
     <types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xs1="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" elementFormDefault="qualified">
-            <xs:element name="DmsService">
-                <xs:complexType>
-                    <xs:sequence/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="DmsServiceResponse">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" targetNamespace="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface" attributeFormDefault="unqualified" elementFormDefault="qualified">
+            <xs:element name="Owner">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="return" type="xs:string"/>
+                        <xs:element name="firstName" type="xs:string"/>
+                        <xs:element name="surname" type="xs:string"/>
+                        <xs:element name="secondSurname" type="xs:string" minOccurs="0"/>
+                        <xs:element name="dateOfBirth" type="tns:Date" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Company">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="legalName" type="xs:string"/>
+                        <xs:element name="contactFirstName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="contactSurname" type="xs:string" minOccurs="0"/>
+                        <xs:element name="contactSecondSurname" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Address">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+                        <xs:element name="city" type="xs:string" minOccurs="0"/>
+                        <xs:element name="country" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Telephone">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="telephoneType">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="WORK"/>
+                                    <xs:enumeration value="HOME"/>
+                                    <xs:enumeration value="MOBILE"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="number" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Email">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="emailType">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="WORK"/>
+                                    <xs:enumeration value="HOME"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="address" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Fax">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="faxType">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="WORK"/>
+                                    <xs:enumeration value="HOME"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="number" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CustomerCompany">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="customerId" type="xs:string"/>
+                        <xs:element ref="tns:Company" minOccurs="0"/>
+                        <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                        <xs:element ref="tns:Address" minOccurs="0"/>
+                        <xs:element ref="tns:Telephone" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="tns:Email" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="tns:Fax" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Driver">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="firstName" type="xs:string"/>
+                        <xs:element name="surname" type="xs:string"/>
+                        <xs:element name="secondSurname" type="xs:string" minOccurs="0"/>
+                        <xs:element name="dateOfBirth" type="tns:Date" minOccurs="0"/>
+                        <xs:element ref="tns:CustomerCompany" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Customer">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="customerId" type="xs:string"/>
+                        <xs:element ref="tns:Owner" minOccurs="0"/>
+                        <xs:element ref="tns:Driver" minOccurs="0"/>
+                        <xs:element ref="tns:Company" minOccurs="0"/>
+                        <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                        <xs:element ref="tns:Address" minOccurs="0"/>
+                        <xs:element ref="tns:Telephone" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="tns:Email" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="tns:Fax" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CustomerList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Customer" maxOccurs="2"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="IsTransactionOk">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="IS_OK"/>
+                        <xs:enumeration value="IS_WARNING"/>
+                        <xs:enumeration value="IS_FATAL_ERROR"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Result">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:IsTransactionOk"/>
+                        <xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+                        <xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateWorkOrderResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element name="workOrderId" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UserId" type="xs:string"/>
+            <xs:element name="Password" type="xs:string"/>
+            <xs:element name="UserInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserId"/>
+                        <xs:element ref="tns:Password"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Property">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Key" type="xs:string"/>
+                        <xs:element name="Value" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Properties">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Property" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VIN" type="xs:string"/>
+            <xs:element name="FindCustomerDetailsByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:VIN"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Description" type="xs:string"/>
+            <xs:element name="CSCCode">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Code">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="2"/>
+                                    <xs:maxLength value="2"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="JobNumber" type="xs:string" minOccurs="0"/>
+                        <xs:element name="deviation" type="xs:string" minOccurs="0"/>
+                        <xs:element name="comment1" type="xs:string" minOccurs="0"/>
+                        <xs:element name="comment2" type="xs:string" minOccurs="0"/>
+                        <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                        <xs:element name="componentFunction" type="xs:string" minOccurs="0"/>
+                        <xs:element name="qb" type="tns:QB" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CustomerId" type="xs:string"/>
+            <xs:element name="FindCustomerDetailsByCustomerIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:CustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CID">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:totalDigits value="3"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="PartOrderId" type="xs:string"/>
+            <xs:element name="CreatePartsOrderResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element ref="tns:PartOrderId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CSCList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:CSCCode" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindLocalOperationByOpNoRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element name="operation" type="tns:OperationInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PartsList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="PartsLine" type="tns:Parts" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdatePartOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:PartOrderId"/>
+                        <xs:element ref="tns:PartsList"/>
+                        <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetVehicleHistoryByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:VIN"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LicenseNumber" type="xs:string"/>
+            <xs:element name="CreatePartsOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:LicenseNumber" minOccurs="0"/>
+                        <xs:element name="customerId" type="xs:string" minOccurs="0"/>
+                        <xs:element name="customerName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="orderReference" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CustomerName" type="xs:string"/>
+            <xs:element name="FindCustomerDetailsByCustomerNameRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:CustomerName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Mileage">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="uom" type="tns:MileageMeasure"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="OperationList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="OperationLine" type="tns:Operation" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PackageList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="PackageLine" type="tns:Package" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="WorkOrderInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:WorkOrderId"/>
+                        <xs:element name="Assembler" type="xs:string" minOccurs="0"/>
+                        <xs:element ref="tns:Mileage" minOccurs="0"/>
+                        <xs:element name="ServiceDate" type="tns:Date" minOccurs="0"/>
+                        <xs:element name="WorkOrderComment" type="xs:string" minOccurs="0"/>
+                        <xs:element ref="tns:CSCList" minOccurs="0"/>
+                        <xs:element ref="tns:PartsList" minOccurs="0"/>
+                        <xs:element ref="tns:OperationList" minOccurs="0"/>
+                        <xs:element ref="tns:PackageList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MultiVehicleDetailsResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element name="Vehicles" minOccurs="0" maxOccurs="200">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                                    <xs:element ref="tns:WorkOrderInfo" minOccurs="0" maxOccurs="20"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateWorkOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:LicenseNumber"/>
+                        <xs:element name="customerId" type="xs:string" minOccurs="0"/>
+                        <xs:element name="customerName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="orderReference" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Type" type="xs:string"/>
+            <xs:element name="PingRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LocalOperationList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="LocalOperationLine" type="tns:LocalOperation" minOccurs="0" maxOccurs="30"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindLocalOperationByOpNoResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element ref="tns:LocalOperationList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CustomerDetailsResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element ref="tns:CustomerList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="WorkOrderId" type="xs:string"/>
+            <xs:element name="FindVehicleDetailsByWorkOrderIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:WorkOrderId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SendVehicleInfoRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:CustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerNameRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+                        <xs:element name="LastName" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByLicenseNumberRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:LicenseNumber"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByPartOrderIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:PartOrderId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:VIN"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="GetInterfaceCapabilitiesRequest">
                 <xs:complexType>
-                    <xs:sequence/>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetInterfaceCapabilitiesResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element name="interfaceCapabilities" minOccurs="0">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="interfaceVersion" type="xs:string"/>
+                                    <xs:element name="canSendCSCCodeComments" type="xs:boolean"/>
+                                    <xs:element name="canFindLocalOperationByOpNo" type="xs:boolean"/>
+                                    <xs:element name="canGetFixedPrice" type="xs:boolean"/>
+                                    <xs:element name="canSendListComments" type="xs:boolean"/>
+                                    <xs:element name="canGetPriceWithAndWithoutVAT" type="xs:boolean"/>
+                                    <xs:element name="canSendVehicleInfo" type="xs:boolean"/>
+                                    <xs:element name="canUseSeveralWorkOrders" type="xs:boolean"/>
+                                    <xs:element name="canSendCSCCodes" type="xs:boolean"/>
+                                    <xs:element name="canUseWorkOrderJobs" type="xs:boolean"/>
+                                    <xs:element name="canUsePartsPrefix" type="xs:boolean"/>
+                                    <xs:element name="canCreatePartsOrder" type="xs:boolean"/>
+                                    <xs:element name="canCreateWorkOrder" type="xs:boolean"/>
+                                    <xs:element name="canFindCustomerDetailsByCustomerId" type="xs:boolean"/>
+                                    <xs:element name="canFindCustomerDetailsByCustomerName" type="xs:boolean"/>
+                                    <xs:element name="canFindCustomerDetailsByVin" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByLicenseNumber" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByPartOrderId" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByVin" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByWorkOrderId" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByCustomerName" type="xs:boolean"/>
+                                    <xs:element name="canFindVehicleDetailsByCustomerId" type="xs:boolean"/>
+                                    <xs:element name="canGetPartsDetails" type="xs:boolean"/>
+                                    <xs:element name="canUpdatePartsOrder" type="xs:boolean"/>
+                                    <xs:element name="canUpdateWorkOrder" type="xs:boolean"/>
+                                    <xs:element name="canGetVehicleHistoryByVin" type="xs:boolean"/>
+                                    <xs:element name="canGetVehicleHistoryByWorkOrderId" type="xs:boolean"/>
+                                    <xs:element name="canUpdateCustomer" type="xs:boolean"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetPartDetailsRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:CustomerId" minOccurs="0"/>
+                        <xs:element name="part" type="tns:Parts" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="operation" type="tns:Operation" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="package" type="tns:PackageInfo" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Price">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Currency" type="xs:string"/>
+                        <xs:element name="AmountWithVAT" type="xs:float"/>
+                        <xs:element name="AmountWithoutVAT" type="xs:float" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemNameRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemNameResponse">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="GetVehicleHistoryByWorkOrderIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:WorkOrderId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ItemId" type="xs:string"/>
+            <xs:element name="ItemQuantity">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="uom" type="tns:UOM" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PartDetailsResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element ref="tns:PartsList" minOccurs="0"/>
+                        <xs:element ref="tns:OperationList" minOccurs="0"/>
+                        <xs:element ref="tns:PackageList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PartsOrder">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="PartsOrderId" type="xs:string"/>
+                        <xs:element ref="tns:Customer" minOccurs="0"/>
+                        <xs:element ref="tns:PartsList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PingResponse" type="xs:boolean"/>
+            <xs:element name="UpdateCustomerRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:Customer"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateCustomerResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateWorkOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:WorkOrderId"/>
+                        <xs:element ref="tns:PackageList" minOccurs="0"/>
+                        <xs:element ref="tns:PartsList" minOccurs="0"/>
+                        <xs:element ref="tns:OperationList" minOccurs="0"/>
+                        <xs:element ref="tns:CSCList" minOccurs="0"/>
+                        <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VariantList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="VariantLine" type="tns:Variant" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VehicleDetailsResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                        <xs:element ref="tns:WorkOrderInfo" minOccurs="0" maxOccurs="20"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VehicleHistoryList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="VehicleHistoryLine" type="tns:VehicleHistory" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VehicleHistoryResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:Result"/>
+                        <xs:element ref="tns:VehicleHistoryList" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VehicleList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Vehicle" type="tns:Vehicle" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:simpleType name="Date">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="(19|20)[0-9][0-9](0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:complexType name="FindVehicleDetailsByCustomerId">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:CustomerId"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindVehicleDetailsByCustomerName">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:CustomerName"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindVehicleDetailsByLicenseNumberRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:LicenseNumber"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindVehicleDetailsByVinRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:VIN"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindVehicleDetailsByWorkOrderId">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:WorkOrderId"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetInterfaceCapabilitiesRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetInterfaceCapabilitiesResult">
+                <xs:sequence>
+                    <xs:element ref="tns:Result"/>
+                    <xs:element name="interfaceCapabilities" type="tns:interfaceCapabilities"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="LocalOperation">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId"/>
+                    <xs:element name="OpDesc" type="xs:string" minOccurs="0"/>
+                    <xs:element name="MaxQuantity" type="xs:int" minOccurs="0"/>
+                    <xs:element name="SkillLevel" type="xs:string"/>
+                    <xs:element ref="tns:VariantList"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="MileageMeasure">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="M"/>
+                    <xs:enumeration value="K"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:complexType name="ModelType">
+                <xs:sequence>
+                    <xs:element ref="tns:CID"/>
+                    <xs:element ref="tns:Description" minOccurs="0"/>
+                    <xs:element name="Type" type="xs:integer" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Operation">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId"/>
+                    <xs:element ref="tns:ItemQuantity" minOccurs="0"/>
+                    <xs:element ref="tns:Price" minOccurs="0"/>
+                    <xs:element name="MakeCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                    <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="VSTTime" type="xs:int" minOccurs="0"/>
+                    <xs:element name="SkillLevel" type="xs:string" minOccurs="0"/>
+                    <xs:element name="JobNumber" type="xs:string" minOccurs="0"/>
+                    <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                    <xs:element name="qb" type="tns:QB" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="OperationInfo">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId"/>
+                    <xs:element name="ModelTypeLine" type="tns:ModelType"/>
+                    <xs:element name="GearboxCode">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="EngineCode">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ModelYear" type="xs:nonNegativeInteger"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Package">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId" minOccurs="0"/>
+                    <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="JobNumber" type="xs:string" minOccurs="0"/>
+                    <xs:element ref="tns:OperationList" minOccurs="0"/>
+                    <xs:element ref="tns:PartsList" minOccurs="0"/>
+                    <xs:element ref="tns:Price" minOccurs="0"/>
+                    <xs:element name="FixedPrice" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PackageInfo">
+                <xs:sequence>
+                    <xs:element name="PackageLine" type="tns:Package" maxOccurs="unbounded"/>
+                    <xs:element name="ModelTypeLine" type="tns:ModelType"/>
+                    <xs:element name="GearboxCode">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="EngineCode">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ModelYear" type="xs:nonNegativeInteger"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Parts">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId"/>
+                    <xs:element ref="tns:ItemQuantity" minOccurs="0"/>
+                    <xs:element ref="tns:Price" minOccurs="0"/>
+                    <xs:element name="StockLevel" type="xs:float" minOccurs="0"/>
+                    <xs:element name="JobNumber" type="xs:string" minOccurs="0"/>
+                    <xs:element name="BinLocation" type="xs:string" minOccurs="0"/>
+                    <xs:element name="MakeCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                    <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="QB">
+                <xs:sequence>
+                    <xs:element ref="tns:ItemId"/>
+                    <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="UOM">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ea"/>
+                    <xs:enumeration value="bx"/>
+                    <xs:enumeration value="case"/>
+                    <xs:enumeration value="ctn"/>
+                    <xs:enumeration value="gal"/>
+                    <xs:enumeration value="qt"/>
+                    <xs:enumeration value="pt"/>
+                    <xs:enumeration value="ft"/>
+                    <xs:enumeration value="yd"/>
+                    <xs:enumeration value="in"/>
+                    <xs:enumeration value="L"/>
+                    <xs:enumeration value="m"/>
+                    <xs:enumeration value="cm"/>
+                    <xs:enumeration value="kg"/>
+                    <xs:enumeration value="g"/>
+                    <xs:enumeration value="other"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:complexType name="Variant">
+                <xs:sequence>
+                    <xs:element name="VariantDesc" type="xs:string"/>
+                    <xs:element name="JobValue" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Vehicle">
+                <xs:sequence>
+                    <xs:element name="ModelTypeLine" type="tns:ModelType" minOccurs="0"/>
+                    <xs:element name="ModelYear" type="xs:nonNegativeInteger"/>
+                    <xs:element ref="tns:VIN" minOccurs="0"/>
+                    <xs:element name="ChassisNumber" type="xs:string" minOccurs="0"/>
+                    <xs:element name="MarketCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="GearboxCode" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SteeringCode" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:nonNegativeInteger">
+                                <xs:totalDigits value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="EngineCode" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element ref="tns:Type" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SuspensionCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="BrakesCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="BodyStyle" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="tns:CID"/>
+                                <xs:element ref="tns:Description" minOccurs="0"/>
+                                <xs:element name="Number" type="xs:integer" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpecialVehicle" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:nonNegativeInteger"/>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="AssemblyPlant" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:nonNegativeInteger">
+                                <xs:totalDigits value="2"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ChassisCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="StructureWeek" type="xs:nonNegativeInteger" minOccurs="0"/>
+                    <xs:element ref="tns:Mileage" minOccurs="0"/>
+                    <xs:element ref="tns:LicenseNumber" minOccurs="0"/>
+                    <xs:element name="ExteriorColorCode" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:nonNegativeInteger">
+                                <xs:pattern value="\d{5}"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="InteriorColorCode" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:length value="6"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element ref="tns:Customer" minOccurs="0"/>
+                    <xs:element name="SalesVersion" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="VehicleDetailsResult">
+                <xs:sequence>
+                    <xs:element ref="tns:Result"/>
+                    <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
+                    <xs:element ref="tns:WorkOrderInfo" minOccurs="0" maxOccurs="20"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="VehicleHistory">
+                <xs:sequence>
+                    <xs:element ref="tns:Mileage" minOccurs="0"/>
+                    <xs:element name="ServiceDate" type="tns:Date" minOccurs="0"/>
+                    <xs:element ref="tns:OperationList"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="interfaceCapabilities">
+                <xs:sequence>
+                    <xs:element name="interfaceVersion" type="xs:string"/>
+                    <xs:element name="canSendCSCCodeComments" type="xs:boolean"/>
+                    <xs:element name="canFindLocalOperationByOpNo" type="xs:boolean"/>
+                    <xs:element name="canGetFixedPrice" type="xs:boolean"/>
+                    <xs:element name="canSendListComments" type="xs:boolean"/>
+                    <xs:element name="canGetPriceWithAndWithoutVAT" type="xs:boolean"/>
+                    <xs:element name="canSendVehicleInfo" type="xs:boolean"/>
+                    <xs:element name="canUseSeveralWorkOrders" type="xs:boolean"/>
+                    <xs:element name="canSendCSCCodes" type="xs:boolean"/>
+                    <xs:element name="canUseWorkOrderJobs" type="xs:boolean"/>
+                    <xs:element name="canUsePartsPrefix" type="xs:boolean"/>
+                    <xs:element name="canCreatePartsOrder" type="xs:boolean"/>
+                    <xs:element name="canCreateWorkOrder" type="xs:boolean"/>
+                    <xs:element name="canFindCustomerDetailsByCustomerId" type="xs:boolean"/>
+                    <xs:element name="canFindCustomerDetailsByCustomerName" type="xs:boolean"/>
+                    <xs:element name="canFindCustomerDetailsByVin" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByLicenseNumber" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByPartOrderId" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByVin" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByWorkOrderId" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByCustomerName" type="xs:boolean"/>
+                    <xs:element name="canFindVehicleDetailsByCustomerId" type="xs:boolean"/>
+                    <xs:element name="canGetPartsDetails" type="xs:boolean"/>
+                    <xs:element name="canUpdatePartsOrder" type="xs:boolean"/>
+                    <xs:element name="canUpdateWorkOrder" type="xs:boolean"/>
+                    <xs:element name="canGetVehicleHistoryByVin" type="xs:boolean"/>
+                    <xs:element name="canGetVehicleHistoryByWorkOrderId" type="xs:boolean"/>
+                    <xs:element name="canUpdateCustomer" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetInterfaceCapabilitiesRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="GetInterfaceCapabilitiesRequest" type="tns:GetInterfaceCapabilitiesRequest"/>
+                    </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="GetInterfaceCapabilitiesRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:GetInterfaceCapabilitiesResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindVehicleDetailsByVinRequest" type="tns:FindVehicleDetailsByVinRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByVinRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemNameRequest">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemNameRequestResponse">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="return" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="FindVehicleDetailsByLicenseNumberRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindVehicleDetailsByLicenseNumberRequest" type="tns:FindVehicleDetailsByLicenseNumberRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByLicenseNumberRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByWorkOrderIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindVehicleDetailsByWorkOrderIdRequest" type="tns:FindVehicleDetailsByWorkOrderId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByWorkOrderIdRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerNameRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindVehicleDetailsByCustomerNameRequest" type="tns:FindVehicleDetailsByCustomerName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerNameRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindVehicleDetailsByCustomerIdRequest" type="tns:FindVehicleDetailsByCustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindVehicleDetailsByCustomerIdRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
     </types>
-    <message name="DmsServiceRequestMessage">
-        <part name="parameters" element="tns:DmsService"/>
-    </message>
-    <message name="DmsServiceResponseMessage">
-        <part name="parameters" element="tns:DmsServiceResponse"/>
-    </message>
     <message name="GetInterfaceCapabilitiesRequestRequestMessage">
         <part name="parameters" element="tns:GetInterfaceCapabilitiesRequest"/>
     </message>
     <message name="GetInterfaceCapabilitiesRequestResponseMessage">
-        <part name="parameters" element="tns:GetInterfaceCapabilitiesRequestResponse"/>
+        <part name="parameters" element="tns:GetInterfaceCapabilitiesResult"/>
+    </message>
+    <message name="FindVehicleDetailsByVinRequestRequestMessage">
+        <part name="parameters" element="tns:FindVehicleDetailsByVinRequest"/>
+    </message>
+    <message name="FindVehicleDetailsByVinRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleDetailsResult"/>
+    </message>
+    <message name="GetSystemNameRequestRequestMessage">
+        <part name="parameters" element="tns:GetSystemNameRequest"/>
+    </message>
+    <message name="GetSystemNameRequestResponseMessage">
+        <part name="parameters" element="tns:GetSystemNameRequestResponse"/>
+    </message>
+    <message name="FindVehicleDetailsByLicenseNumberRequestRequestMessage">
+        <part name="parameters" element="tns:FindVehicleDetailsByLicenseNumberRequest"/>
+    </message>
+    <message name="FindVehicleDetailsByLicenseNumberRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleDetailsResult"/>
+    </message>
+    <message name="FindVehicleDetailsByWorkOrderIdRequestRequestMessage">
+        <part name="parameters" element="tns:FindVehicleDetailsByWorkOrderIdRequest"/>
+    </message>
+    <message name="FindVehicleDetailsByWorkOrderIdRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleDetailsResult"/>
+    </message>
+    <message name="FindVehicleDetailsByCustomerNameRequestRequestMessage">
+        <part name="parameters" element="tns:FindVehicleDetailsByCustomerNameRequest"/>
+    </message>
+    <message name="FindVehicleDetailsByCustomerNameRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleDetailsResult"/>
+    </message>
+    <message name="FindVehicleDetailsByCustomerIdRequestRequestMessage">
+        <part name="parameters" element="tns:FindVehicleDetailsByCustomerIdRequest"/>
+    </message>
+    <message name="FindVehicleDetailsByCustomerIdRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleDetailsResult"/>
     </message>
     <portType name="DmsServicePortType">
-        <operation name="DmsService">
-            <input message="tns:DmsServiceRequestMessage"/>
-            <output message="tns:DmsServiceResponseMessage"/>
-        </operation>
         <operation name="GetInterfaceCapabilitiesRequest">
             <input message="tns:GetInterfaceCapabilitiesRequestRequestMessage"/>
             <output message="tns:GetInterfaceCapabilitiesRequestResponseMessage"/>
+        </operation>
+        <operation name="FindVehicleDetailsByVinRequest">
+            <input message="tns:FindVehicleDetailsByVinRequestRequestMessage"/>
+            <output message="tns:FindVehicleDetailsByVinRequestResponseMessage"/>
+        </operation>
+        <operation name="GetSystemNameRequest">
+            <input message="tns:GetSystemNameRequestRequestMessage"/>
+            <output message="tns:GetSystemNameRequestResponseMessage"/>
+        </operation>
+        <operation name="FindVehicleDetailsByLicenseNumberRequest">
+            <input message="tns:FindVehicleDetailsByLicenseNumberRequestRequestMessage"/>
+            <output message="tns:FindVehicleDetailsByLicenseNumberRequestResponseMessage"/>
+        </operation>
+        <operation name="FindVehicleDetailsByWorkOrderIdRequest">
+            <input message="tns:FindVehicleDetailsByWorkOrderIdRequestRequestMessage"/>
+            <output message="tns:FindVehicleDetailsByWorkOrderIdRequestResponseMessage"/>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerNameRequest">
+            <input message="tns:FindVehicleDetailsByCustomerNameRequestRequestMessage"/>
+            <output message="tns:FindVehicleDetailsByCustomerNameRequestResponseMessage"/>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerIdRequest">
+            <input message="tns:FindVehicleDetailsByCustomerIdRequestRequestMessage"/>
+            <output message="tns:FindVehicleDetailsByCustomerIdRequestResponseMessage"/>
         </operation>
     </portType>
     <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
@@ -60,13 +1153,136 @@
                 <soapbind:body use="literal"/>
             </output>
         </operation>
+        <operation name="FindVehicleDetailsByVinRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByVinRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetSystemNameRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemNameRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByLicenseNumberRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByLicenseNumberRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByWorkOrderIdRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByWorkOrderIdRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerNameRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerNameRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerIdRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerIdRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
-
-    <service name = "DmsService">
-        <documentation>WSDL File for MyService</documentation>
-        <port binding = "tns:DmsServiceSoapBinding" name = "DmsServiceSoap">
-            <soapbind:address
-                    location = "http://localhost:8001/alfaavto_vida/ws//DmsService.1cws" />
+    <binding name="DmsServiceSoap12Binding" type="tns:DmsServicePortType">
+        <soap12bind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetInterfaceCapabilitiesRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetInterfaceCapabilitiesRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByVinRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByVinRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetSystemNameRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemNameRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByLicenseNumberRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByLicenseNumberRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByWorkOrderIdRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByWorkOrderIdRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerNameRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerNameRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindVehicleDetailsByCustomerIdRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerIdRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="DmsService">
+        <port name="DmsServiceSoap" binding="tns:DmsServiceSoapBinding">
+            <documentation>
+                <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1"/>
+            </documentation>
+            <soapbind:address location="http://localhost:8001/alfaavto_vida/ws//DmsService.1cws"/>
+        </port>
+        <port name="DmsServiceSoap12" binding="tns:DmsServiceSoap12Binding">
+            <soap12bind:address location="http://localhost:8001/alfaavto_vida/ws//DmsService.1cws"/>
         </port>
     </service>
 </definitions>
