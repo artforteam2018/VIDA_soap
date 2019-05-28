@@ -2,9 +2,19 @@ var soap = require('soap');
 var url = 'example.wsdl';
 
 var args = {UserInfo: {UserId: 'Гридина О. Е.', Password: 'Jkmuf7404'}, Properties: {Property: {Key: '', Value: ''}}};
-soap.createClient(url, function(err, client) {
-  client.GetInterfaceCapabilitiesRequest(args, function(err, result) {
-    console.log(result);
-  });
-});
+
+module.exports = (func, argus) => {
+    return new Promise((resolve, reject) => {
+        soap.createClient(url, function (err, client) {
+            client[func](argus, function (err, result) {
+                if (err) {
+                    console.log(err.response.request.body.split('>').join('>\n'))
+                    reject(err)
+                }
+                resolve(result)
+            });
+        });
+    })
+};
+
 
