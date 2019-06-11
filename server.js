@@ -68,6 +68,19 @@ var myService = {
                 res.return.attributes = attributes;
                 return res.return;
             },
+            GetPartDetailsRequest: async function (args) {
+                console.log('GetPartDetailsRequest');
+                let GetPartDetailsRequest = {};
+                Object.keys(args).forEach(arg => {
+                    GetPartDetailsRequest[arg] = args[arg];
+                })
+                GetPartDetailsRequest = await fillEmpty(GetPartDetailsRequest);
+                let res = await clientApp('GetPartDetailsRequest'.replace(/Request/g, ''), {GetPartDetailsRequest})
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+
+            },
             GetSystemNameRequest: async function (args) {
                 console.log('GetSystemNameRequest');
                 //let res = await clientApp('FindVehicleDetailsByVinRequest', args)
@@ -77,6 +90,21 @@ var myService = {
         }
     }
 };
+
+async function fillEmpty(obj) {
+    await Promise.all(Object.keys(obj).map(key => {
+        return new Promise(async resolve => {
+            if (typeof obj[key] === 'object' && obj[key] !== null) {
+                obj[key] = await fillEmpty(obj[key])
+            } else if (obj[key] === null) {
+                obj[key] = 0
+            }
+            resolve(obj[key]);
+        })
+    }))
+    return obj;
+}
+
 var xml = require('fs').readFileSync('exampleserver.wsdl', 'utf8');
 
 //express server example

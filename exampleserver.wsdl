@@ -1068,6 +1068,20 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="GetPartDetailsRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="GetPartDetailsRequest" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetPartDetailsRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
     </types>
     <message name="GetInterfaceCapabilitiesRequestRequestMessage">
@@ -1112,6 +1126,12 @@
     <message name="FindVehicleDetailsByCustomerIdRequestResponseMessage">
         <part name="parameters" element="tns:VehicleDetailsResult"/>
     </message>
+    <message name="GetPartDetailsRequestRequestMessage">
+        <part name="parameters" element="tns:GetPartDetailsRequest"/>
+    </message>
+    <message name="GetPartDetailsRequestResponseMessage">
+        <part name="parameters" element="tns:PartDetailsResult"/>
+    </message>
     <portType name="DmsServicePortType">
         <operation name="GetInterfaceCapabilitiesRequest">
             <input message="tns:GetInterfaceCapabilitiesRequestRequestMessage"/>
@@ -1140,6 +1160,10 @@
         <operation name="FindVehicleDetailsByCustomerIdRequest">
             <input message="tns:FindVehicleDetailsByCustomerIdRequestRequestMessage"/>
             <output message="tns:FindVehicleDetailsByCustomerIdRequestResponseMessage"/>
+        </operation>
+        <operation name="GetPartDetailsRequest">
+            <input message="tns:GetPartDetailsRequestRequestMessage"/>
+            <output message="tns:GetPartDetailsRequestResponseMessage"/>
         </operation>
     </portType>
     <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
@@ -1207,6 +1231,15 @@
                 <soapbind:body use="literal"/>
             </output>
         </operation>
+        <operation name="GetPartDetailsRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetPartDetailsRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
     <binding name="DmsServiceSoap12Binding" type="tns:DmsServicePortType">
         <soap12bind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -1266,6 +1299,15 @@
         </operation>
         <operation name="FindVehicleDetailsByCustomerIdRequest">
             <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerIdRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetPartDetailsRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetPartDetailsRequest"/>
             <input>
                 <soap12bind:body use="literal"/>
             </input>
