@@ -1082,6 +1082,34 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="CreateWorkOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CreateWorkOrderRequest" type="tns:CreateWorkOrderRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateWorkOrderResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:CreateWorkOrderResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateWorkOrderRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="UpdateWorkOrderRequest" type="tns:UpdateWorkOrderRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateWorkOrderResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:Result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
     </types>
     <message name="GetInterfaceCapabilitiesRequestRequestMessage">
@@ -1132,6 +1160,18 @@
     <message name="GetPartDetailsRequestResponseMessage">
         <part name="parameters" element="tns:PartDetailsResult"/>
     </message>
+    <message name="CreateWorkOrderRequestMessage">
+        <part name="parameters" element="tns:CreateWorkOrderRequest"/>
+    </message>
+    <message name="CreateWorkOrderResponseMessage">
+        <part name="parameters" element="tns:CreateWorkOrderResult"/>
+    </message>
+    <message name="UpdateWorkOrderRequestMessage">
+        <part name="parameters" element="tns:UpdateWorkOrderRequest"/>
+    </message>
+    <message name="UpdateWorkOrderResponseMessage">
+        <part name="parameters" element="tns:Result"/>
+    </message>
     <portType name="DmsServicePortType">
         <operation name="GetInterfaceCapabilitiesRequest">
             <input message="tns:GetInterfaceCapabilitiesRequestRequestMessage"/>
@@ -1164,6 +1204,14 @@
         <operation name="GetPartDetailsRequest">
             <input message="tns:GetPartDetailsRequestRequestMessage"/>
             <output message="tns:GetPartDetailsRequestResponseMessage"/>
+        </operation>
+        <operation name="CreateWorkOrderRequest">
+            <input message="tns:CreateWorkOrderRequestMessage"/>
+            <output message="tns:CreateWorkOrderResponseMessage"/>
+        </operation>
+        <operation name="UpdateWorkOrderRequest">
+            <input message="tns:UpdateWorkOrderRequestMessage"/>
+            <output message="tns:UpdateWorkOrderResponseMessage"/>
         </operation>
     </portType>
     <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
@@ -1240,6 +1288,24 @@
                 <soapbind:body use="literal"/>
             </output>
         </operation>
+        <operation name="CreateWorkOrderRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:CreateWorkOrderRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UpdateWorkOrderRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:UpdateWorkOrderRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
     <binding name="DmsServiceSoap12Binding" type="tns:DmsServicePortType">
         <soap12bind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -1308,6 +1374,24 @@
         </operation>
         <operation name="GetPartDetailsRequest">
             <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetPartDetailsRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="CreateWorkOrderRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:CreateWorkOrderRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UpdateWorkOrderRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:UpdateWorkOrderRequest"/>
             <input>
                 <soap12bind:body use="literal"/>
             </input>

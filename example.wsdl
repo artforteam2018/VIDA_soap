@@ -512,9 +512,9 @@
                     <xs:sequence>
                         <xs:element ref="tns:UserInfo"/>
                         <xs:element ref="tns:Properties"/>
-                        <xs:element ref="tns:CustomerId" minOccurs="0"/>
+                        <xs:element name="CustomerId" nillable="true"/>
                         <xs:element name="part" type="tns:Parts" minOccurs="0" maxOccurs="unbounded"/>
-                        <xs:element name="operation" type="tns:Operation" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="Operation" type="tns:Operation" minOccurs="0" maxOccurs="20"/>
                         <xs:element name="package" type="tns:PackageInfo" minOccurs="0"/>
                     </xs:sequence>
                 </xs:complexType>
@@ -650,6 +650,22 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:complexType name="CreateWorkOrderRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:LicenseNumber"/>
+                    <xs:element name="customerId" type="xs:string" minOccurs="0"/>
+                    <xs:element name="customerName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="orderReference" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CreateWorkOrderResult">
+                <xs:sequence>
+                    <xs:element ref="tns:Result"/>
+                    <xs:element name="workOrderId" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:simpleType name="Date">
                 <xs:restriction base="xs:string">
                     <xs:pattern value="(19|20)[0-9][0-9](0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
@@ -700,6 +716,22 @@
                     <xs:element name="interfaceCapabilities" type="tns:interfaceCapabilities"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="GetPartDetailsRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:CustomerId" minOccurs="0"/>
+                    <xs:element name="part" type="tns:Parts" minOccurs="0" maxOccurs="20"/>
+                    <xs:element name="operation" type="tns:Operation" minOccurs="0" maxOccurs="20"/>
+                    <xs:element name="package" type="tns:PackageInfo" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetSystemNameRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="LocalOperation">
                 <xs:sequence>
                     <xs:element ref="tns:ItemId"/>
@@ -730,11 +762,11 @@
                     <xs:element name="MakeCode" type="xs:string" minOccurs="0"/>
                     <xs:element name="Vehicle" type="tns:Vehicle" minOccurs="0"/>
                     <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
-                    <xs:element name="VSTTime" type="xs:int" minOccurs="0"/>
+                    <xs:element name="VSTTime" type="xs:string" minOccurs="0"/>
                     <xs:element name="SkillLevel" type="xs:string" minOccurs="0"/>
                     <xs:element name="JobNumber" type="xs:string" minOccurs="0"/>
                     <xs:element name="comment" type="xs:string" minOccurs="0"/>
-                    <xs:element name="qb" type="tns:QB" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="QB" type="tns:QB" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="OperationInfo">
@@ -799,6 +831,14 @@
                     <xs:element name="ModelYear" type="xs:nonNegativeInteger"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="PartDetailsResult">
+                <xs:sequence>
+                    <xs:element ref="tns:Result"/>
+                    <xs:element ref="tns:PartsList" minOccurs="0"/>
+                    <xs:element ref="tns:OperationList" minOccurs="0"/>
+                    <xs:element ref="tns:PackageList" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="Parts">
                 <xs:sequence>
                     <xs:element ref="tns:ItemId"/>
@@ -817,6 +857,13 @@
                 <xs:sequence>
                     <xs:element ref="tns:ItemId"/>
                     <xs:element name="ItemTitle" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Result">
+                <xs:sequence>
+                    <xs:element ref="tns:IsTransactionOk"/>
+                    <xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:simpleType name="UOM">
@@ -839,6 +886,18 @@
                     <xs:enumeration value="other"/>
                 </xs:restriction>
             </xs:simpleType>
+            <xs:complexType name="UpdateWorkOrderRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:WorkOrderId"/>
+                    <xs:element ref="tns:PackageList" minOccurs="0"/>
+                    <xs:element ref="tns:PartsList" minOccurs="0"/>
+                    <xs:element ref="tns:OperationList" minOccurs="0"/>
+                    <xs:element ref="tns:CSCList" minOccurs="0"/>
+                    <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="Variant">
                 <xs:sequence>
                     <xs:element name="VariantDesc" type="xs:string"/>
@@ -906,16 +965,12 @@
                     <xs:element ref="tns:LicenseNumber" minOccurs="0"/>
                     <xs:element name="ExteriorColorCode" minOccurs="0">
                         <xs:simpleType>
-                            <xs:restriction base="xs:nonNegativeInteger">
-                                <xs:pattern value="\d{5}"/>
-                            </xs:restriction>
+                            <xs:restriction base="xs:nonNegativeInteger"/>
                         </xs:simpleType>
                     </xs:element>
                     <xs:element name="InteriorColorCode" minOccurs="0">
                         <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:length value="6"/>
-                            </xs:restriction>
+                            <xs:restriction base="xs:string"/>
                         </xs:simpleType>
                     </xs:element>
                     <xs:element ref="tns:Customer" minOccurs="0"/>
@@ -996,18 +1051,6 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="GetSystemNameRequest">
-                <xs:complexType>
-                    <xs:sequence/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="GetSystemNameRequestResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="return" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
             <xs:element name="FindVehicleDetailsByLicenseNumber">
                 <xs:complexType>
                     <xs:sequence>
@@ -1067,11 +1110,53 @@
             <xs:element name="GetPartDetails">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="GetPartDetailsRequest" type="xs:string"/>
+                        <xs:element name="GetPartDetailsRequest" type="tns:GetPartDetailsRequest"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="GetPartDetailsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:PartDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateWorkOrder">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CreateWorkOrderRequest" type="tns:CreateWorkOrderRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateWorkOrderResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:CreateWorkOrderResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateWorkOrder">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="UpdateWorkOrderRequest" type="tns:UpdateWorkOrderRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateWorkOrderResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:Result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemName">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="GetSystemNameRequest" type="tns:GetSystemNameRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetSystemNameResponse">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="return" type="xs:string"/>
@@ -1091,12 +1176,6 @@
     </message>
     <message name="FindVehicleDetailsByVinResponseMessage">
         <part name="parameters" element="tns:FindVehicleDetailsByVinResponse"/>
-    </message>
-    <message name="GetSystemNameRequestRequestMessage">
-        <part name="parameters" element="tns:GetSystemNameRequest"/>
-    </message>
-    <message name="GetSystemNameRequestResponseMessage">
-        <part name="parameters" element="tns:GetSystemNameRequestResponse"/>
     </message>
     <message name="FindVehicleDetailsByLicenseNumberRequestMessage">
         <part name="parameters" element="tns:FindVehicleDetailsByLicenseNumber"/>
@@ -1128,6 +1207,24 @@
     <message name="GetPartDetailsResponseMessage">
         <part name="parameters" element="tns:GetPartDetailsResponse"/>
     </message>
+    <message name="CreateWorkOrderRequestMessage">
+        <part name="parameters" element="tns:CreateWorkOrder"/>
+    </message>
+    <message name="CreateWorkOrderResponseMessage">
+        <part name="parameters" element="tns:CreateWorkOrderResponse"/>
+    </message>
+    <message name="UpdateWorkOrderRequestMessage">
+        <part name="parameters" element="tns:UpdateWorkOrder"/>
+    </message>
+    <message name="UpdateWorkOrderResponseMessage">
+        <part name="parameters" element="tns:UpdateWorkOrderResponse"/>
+    </message>
+    <message name="GetSystemNameRequestMessage">
+        <part name="parameters" element="tns:GetSystemName"/>
+    </message>
+    <message name="GetSystemNameResponseMessage">
+        <part name="parameters" element="tns:GetSystemNameResponse"/>
+    </message>
     <portType name="DmsServicePortType">
         <operation name="GetInterfaceCapabilitiesRequest">
             <input message="tns:GetInterfaceCapabilitiesRequestRequestMessage"/>
@@ -1136,10 +1233,6 @@
         <operation name="FindVehicleDetailsByVin">
             <input message="tns:FindVehicleDetailsByVinRequestMessage"/>
             <output message="tns:FindVehicleDetailsByVinResponseMessage"/>
-        </operation>
-        <operation name="GetSystemNameRequest">
-            <input message="tns:GetSystemNameRequestRequestMessage"/>
-            <output message="tns:GetSystemNameRequestResponseMessage"/>
         </operation>
         <operation name="FindVehicleDetailsByLicenseNumber">
             <input message="tns:FindVehicleDetailsByLicenseNumberRequestMessage"/>
@@ -1161,6 +1254,18 @@
             <input message="tns:GetPartDetailsRequestMessage"/>
             <output message="tns:GetPartDetailsResponseMessage"/>
         </operation>
+        <operation name="CreateWorkOrder">
+            <input message="tns:CreateWorkOrderRequestMessage"/>
+            <output message="tns:CreateWorkOrderResponseMessage"/>
+        </operation>
+        <operation name="UpdateWorkOrder">
+            <input message="tns:UpdateWorkOrderRequestMessage"/>
+            <output message="tns:UpdateWorkOrderResponseMessage"/>
+        </operation>
+        <operation name="GetSystemName">
+            <input message="tns:GetSystemNameRequestMessage"/>
+            <output message="tns:GetSystemNameResponseMessage"/>
+        </operation>
     </portType>
     <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
         <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -1175,15 +1280,6 @@
         </operation>
         <operation name="FindVehicleDetailsByVin">
             <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByVin"/>
-            <input>
-                <soapbind:body use="literal"/>
-            </input>
-            <output>
-                <soapbind:body use="literal"/>
-            </output>
-        </operation>
-        <operation name="GetSystemNameRequest">
-            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemNameRequest"/>
             <input>
                 <soapbind:body use="literal"/>
             </input>
@@ -1236,6 +1332,33 @@
                 <soapbind:body use="literal"/>
             </output>
         </operation>
+        <operation name="CreateWorkOrder">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:CreateWorkOrder"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UpdateWorkOrder">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:UpdateWorkOrder"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetSystemName">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemName"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
     <binding name="DmsServiceSoap12Binding" type="tns:DmsServicePortType">
         <soap12bind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -1250,15 +1373,6 @@
         </operation>
         <operation name="FindVehicleDetailsByVin">
             <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByVin"/>
-            <input>
-                <soap12bind:body use="literal"/>
-            </input>
-            <output>
-                <soap12bind:body use="literal"/>
-            </output>
-        </operation>
-        <operation name="GetSystemNameRequest">
-            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemNameRequest"/>
             <input>
                 <soap12bind:body use="literal"/>
             </input>
@@ -1311,16 +1425,43 @@
                 <soap12bind:body use="literal"/>
             </output>
         </operation>
+        <operation name="CreateWorkOrder">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:CreateWorkOrder"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UpdateWorkOrder">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:UpdateWorkOrder"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetSystemName">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemName"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
     <service name="DmsService">
         <port name="DmsServiceSoap" binding="tns:DmsServiceSoapBinding">
             <documentation>
                 <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1"/>
             </documentation>
-            <soapbind:address location="http://localhost:18080/alfaavto_vida/ws//DmsService.1cws"/>
+            <soapbind:address location="http://localhost:18080/alfaavto_vida/ws/DmsService.1cws"/>
         </port>
         <port name="DmsServiceSoap12" binding="tns:DmsServiceSoap12Binding">
-            <soap12bind:address location="http://localhost:18080/alfaavto_vida/ws//DmsService.1cws"/>
+            <soap12bind:address location="http://localhost:18080/alfaavto_vida/ws/DmsService.1cws"/>
         </port>
     </service>
 </definitions>

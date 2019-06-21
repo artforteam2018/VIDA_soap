@@ -24,6 +24,28 @@ var myService = {
                 res.return.attributes = attributes;
                 return res.return;
             },
+            FindVehicleDetailsByCustomerNameRequest: async function (args) {
+                console.log('FindVehicleDetailsByCustomerNameRequest');
+                let FindVehicleDetailsByCustomerNameRequest = {};
+                Object.keys(args).forEach(arg => {
+                    FindVehicleDetailsByCustomerNameRequest[arg] = args[arg];
+                })
+                let res = await clientApp('FindVehicleDetailsByCustomerNameRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerNameRequest})
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+            },
+            FindVehicleDetailsByCustomerId: async function (args) {
+                console.log('FindVehicleDetailsByCustomerId');
+                let FindVehicleDetailsByCustomerId = {};
+                Object.keys(args).forEach(arg => {
+                    FindVehicleDetailsByCustomerId[arg] = args[arg];
+                })
+                let res = await clientApp('FindVehicleDetailsByCustomerId'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerId})
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+            },
             FindVehicleDetailsByVinRequest: async function (args) {
                 console.log('FindVehicleDetailsByVinRequest');
                 let FindVehicleDetailsByVinRequest = {};
@@ -81,11 +103,41 @@ var myService = {
                 return res.return;
 
             },
+            CreateWorkOrderRequest: async function (args) {
+                console.log('CreateWorkOrderRequest');
+                let CreateWorkOrderRequest = {};
+                Object.keys(args).forEach(arg => {
+                    CreateWorkOrderRequest[arg] = args[arg];
+                })
+                CreateWorkOrderRequest = await fillEmpty(CreateWorkOrderRequest);
+                let res = await clientApp('CreateWorkOrderRequest'.replace(/Request/g, ''), {CreateWorkOrderRequest})
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+            },
+            UpdateWorkOrderRequest: async function (args) {
+                console.log('UpdateWorkOrderRequest');
+                let UpdateWorkOrderRequest = {};
+                Object.keys(args).forEach(arg => {
+                    UpdateWorkOrderRequest[arg] = args[arg];
+                })
+                UpdateWorkOrderRequest = await fillEmpty(UpdateWorkOrderRequest);
+                let res = await clientApp('UpdateWorkOrderRequest'.replace(/Request/g, ''), {UpdateWorkOrderRequest})
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+            },
             GetSystemNameRequest: async function (args) {
                 console.log('GetSystemNameRequest');
-                //let res = await clientApp('FindVehicleDetailsByVinRequest', args)
+                let GetSystemNameRequest = {};
+                Object.keys(args).forEach(arg => {
+                    GetSystemNameRequest[arg] = args[arg];
+                })
+                GetSystemNameRequest = await fillEmpty(GetSystemNameRequest);
+                let res = await clientApp('GetSystemNameRequest'.replace(/Request/g, ''), {GetSystemNameRequest})
                 let attributes = {};
-                return 'Неопознанная ошибка';
+                res.return.attributes = attributes;
+                return res.return;
             },
         }
     }
