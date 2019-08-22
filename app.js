@@ -6,13 +6,17 @@ var args = {UserInfo: {UserId: 'Гридина О. Е.', Password: 'Jkmuf7404'},
 module.exports = (func, argus) => {
     return new Promise((resolve, reject) => {
         soap.createClient(url, function (err, client) {
-            client[func](argus, function (err, result) {
-                if (err) {
-                    console.log(err.response.request.body.split('>').join('>\n'))
-                    reject(err)
-                }
-                resolve(result)
-            });
+            try {
+                client[func](argus, function (err, result) {
+                    if (err) {
+                        console.log(err.response.request.body.split('>').join('>\n'))
+                        reject(err)
+                    }
+                    resolve(result)
+                });
+            } catch (e) {
+                
+            }
         });
     })
 };

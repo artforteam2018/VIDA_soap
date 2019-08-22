@@ -423,6 +423,15 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="FindCustomerDetailsByCustomerIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:CustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="FindVehicleDetailsByCustomerNameRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -452,6 +461,15 @@
                 </xs:complexType>
             </xs:element>
             <xs:element name="FindVehicleDetailsByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:UserInfo"/>
+                        <xs:element ref="tns:Properties"/>
+                        <xs:element ref="tns:VIN"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetVehicleHistoryByVinRequest">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element ref="tns:UserInfo"/>
@@ -664,6 +682,13 @@
                     <xs:element ref="tns:CustomerId"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="FindCustomerDetailsByCustomerId">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:CustomerId"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="FindVehicleDetailsByCustomerName">
                 <xs:sequence>
                     <xs:element ref="tns:UserInfo"/>
@@ -679,6 +704,13 @@
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="FindVehicleDetailsByVinRequest">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:VIN"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetVehicleHistoryByVinRequest">
                 <xs:sequence>
                     <xs:element ref="tns:UserInfo"/>
                     <xs:element ref="tns:Properties"/>
@@ -1000,6 +1032,20 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="GetVehicleHistoryByVinRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="GetVehicleHistoryByVinRequest" type="tns:GetVehicleHistoryByVinRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetVehicleHistoryByVinRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:VehicleHistoryResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="GetSystemNameRequest">
                 <xs:complexType>
                     <xs:sequence/>
@@ -1050,7 +1096,7 @@
             <xs:element name="FindVehicleDetailsByCustomerNameRequestResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                        <xs:element name="return" type="tns:MultiVehicleDetailsResult"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1065,6 +1111,20 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="return" type="tns:VehicleDetailsResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindCustomerDetailsByCustomerIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindCustomerDetailsByCustomerIdRequest" type="tns:FindCustomerDetailsByCustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindCustomerDetailsByCustomerIdRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:CustomerDetailsResult"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1124,11 +1184,17 @@
     <message name="FindVehicleDetailsByVinRequestResponseMessage">
         <part name="parameters" element="tns:VehicleDetailsResult"/>
     </message>
+    <message name="GetVehicleHistoryByVinRequestRequestMessage">
+        <part name="parameters" element="tns:GetVehicleHistoryByVinRequest"/>
+    </message>
+    <message name="GetVehicleHistoryByVinRequestResponseMessage">
+        <part name="parameters" element="tns:VehicleHistoryResult"/>
+    </message>
     <message name="GetSystemNameRequestRequestMessage">
         <part name="parameters" element="tns:GetSystemNameRequest"/>
     </message>
     <message name="GetSystemNameRequestResponseMessage">
-        <part name="parameters" element="tns:GetSystemNameRequestResponse"/>
+        <part name="parameters" element="tns:GetSystemNameResponse"/>
     </message>
     <message name="FindVehicleDetailsByLicenseNumberRequestRequestMessage">
         <part name="parameters" element="tns:FindVehicleDetailsByLicenseNumberRequest"/>
@@ -1146,13 +1212,19 @@
         <part name="parameters" element="tns:FindVehicleDetailsByCustomerNameRequest"/>
     </message>
     <message name="FindVehicleDetailsByCustomerNameRequestResponseMessage">
-        <part name="parameters" element="tns:VehicleDetailsResult"/>
+        <part name="parameters" element="tns:MultiVehicleDetailsResult"/>
     </message>
     <message name="FindVehicleDetailsByCustomerIdRequestRequestMessage">
         <part name="parameters" element="tns:FindVehicleDetailsByCustomerIdRequest"/>
     </message>
     <message name="FindVehicleDetailsByCustomerIdRequestResponseMessage">
         <part name="parameters" element="tns:VehicleDetailsResult"/>
+    </message>
+    <message name="FindCustomerDetailsByCustomerIdRequestRequestMessage">
+        <part name="parameters" element="tns:FindCustomerDetailsByCustomerIdRequest"/>
+    </message>
+    <message name="FindCustomerDetailsByCustomerIdRequestResponseMessage">
+        <part name="parameters" element="tns:CustomerDetailsResult"/>
     </message>
     <message name="GetPartDetailsRequestRequestMessage">
         <part name="parameters" element="tns:GetPartDetailsRequest"/>
@@ -1181,6 +1253,10 @@
             <input message="tns:FindVehicleDetailsByVinRequestRequestMessage"/>
             <output message="tns:FindVehicleDetailsByVinRequestResponseMessage"/>
         </operation>
+        <operation name="GetVehicleHistoryByVinRequest">
+            <input message="tns:GetVehicleHistoryByVinRequestRequestMessage"/>
+            <output message="tns:GetVehicleHistoryByVinRequestResponseMessage"/>
+        </operation>
         <operation name="GetSystemNameRequest">
             <input message="tns:GetSystemNameRequestRequestMessage"/>
             <output message="tns:GetSystemNameRequestResponseMessage"/>
@@ -1200,6 +1276,10 @@
         <operation name="FindVehicleDetailsByCustomerIdRequest">
             <input message="tns:FindVehicleDetailsByCustomerIdRequestRequestMessage"/>
             <output message="tns:FindVehicleDetailsByCustomerIdRequestResponseMessage"/>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerIdRequest">
+            <input message="tns:FindCustomerDetailsByCustomerIdRequestRequestMessage"/>
+            <output message="tns:FindCustomerDetailsByCustomerIdRequestResponseMessage"/>
         </operation>
         <operation name="GetPartDetailsRequest">
             <input message="tns:GetPartDetailsRequestRequestMessage"/>
@@ -1227,6 +1307,15 @@
         </operation>
         <operation name="FindVehicleDetailsByVinRequest">
             <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByVinRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetVehicleHistoryByVinRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetVehicleHistoryByVinRequest"/>
             <input>
                 <soapbind:body use="literal"/>
             </input>
@@ -1272,6 +1361,15 @@
         </operation>
         <operation name="FindVehicleDetailsByCustomerIdRequest">
             <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerIdRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerIdRequest">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindCustomerDetailsByCustomerIdRequest"/>
             <input>
                 <soapbind:body use="literal"/>
             </input>
@@ -1327,6 +1425,15 @@
                 <soap12bind:body use="literal"/>
             </output>
         </operation>
+        <operation name="GetVehicleHistoryByVinRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetVehicleHistoryByVinRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
         <operation name="GetSystemNameRequest">
             <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemNameRequest"/>
             <input>
@@ -1365,6 +1472,15 @@
         </operation>
         <operation name="FindVehicleDetailsByCustomerIdRequest">
             <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindVehicleDetailsByCustomerIdRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerIdRequest">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindCustomerDetailsByCustomerIdRequest"/>
             <input>
                 <soap12bind:body use="literal"/>
             </input>

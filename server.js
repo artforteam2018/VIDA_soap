@@ -8,7 +8,7 @@ var myService = {
         DmsServiceSoap: {
             GetInterfaceCapabilitiesRequest: async function (args) {
                 console.log('GetInterfaceCapabilitiesRequest');
-                let res = await clientApp('GetInterfaceCapabilitiesRequest', args)
+                let res = await clientApp('GetInterfaceCapabilitiesRequest', args);
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -18,8 +18,9 @@ var myService = {
                 let FindVehicleDetailsByLicenseNumberRequest = {};
                 Object.keys(args).forEach(arg => {
                     FindVehicleDetailsByLicenseNumberRequest[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByLicenseNumberRequest'.replace(/Request/g, ''), {FindVehicleDetailsByLicenseNumberRequest})
+                });
+                FindVehicleDetailsByLicenseNumberRequest = await fillEmpty(FindVehicleDetailsByLicenseNumberRequest);
+                let res = await clientApp('FindVehicleDetailsByLicenseNumberRequest'.replace(/Request/g, ''), {FindVehicleDetailsByLicenseNumberRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -29,19 +30,32 @@ var myService = {
                 let FindVehicleDetailsByCustomerNameRequest = {};
                 Object.keys(args).forEach(arg => {
                     FindVehicleDetailsByCustomerNameRequest[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByCustomerNameRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerNameRequest})
+                });
+                FindVehicleDetailsByCustomerNameRequest = await fillEmpty(FindVehicleDetailsByCustomerNameRequest);
+                let res = await clientApp('FindVehicleDetailsByCustomerNameRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerNameRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
             },
-            FindVehicleDetailsByCustomerId: async function (args) {
-                console.log('FindVehicleDetailsByCustomerId');
-                let FindVehicleDetailsByCustomerId = {};
+            FindCustomerDetailsByCustomerIdRequest: async function (args) {
+                console.log('FindCustomerDetailsByCustomerIdRequest');
+                let FindCustomerDetailsByCustomerIdRequest = {};
                 Object.keys(args).forEach(arg => {
-                    FindVehicleDetailsByCustomerId[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByCustomerId'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerId})
+                    FindCustomerDetailsByCustomerIdRequest[arg] = args[arg];
+                });
+                FindCustomerDetailsByCustomerIdRequest = await fillEmpty(FindCustomerDetailsByCustomerIdRequest);
+                let res = await clientApp('FindCustomerDetailsByCustomerIdRequest'.replace(/Request/g, ''), {FindCustomerDetailsByCustomerIdRequest});
+                let attributes = {};
+                res.return.attributes = attributes;
+                return res.return;
+            },
+            GetVehicleHistoryByVinRequest: async function (args) {
+                console.log('GetVehicleHistoryByVinRequest');
+                let GetVehicleHistoryByVinRequest = {};
+                Object.keys(args).forEach(arg => {
+                    GetVehicleHistoryByVinRequest[arg] = args[arg];
+                });
+                let res = await clientApp('GetVehicleHistoryByVinRequest'.replace(/Request/g, ''), {GetVehicleHistoryByVinRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -51,8 +65,8 @@ var myService = {
                 let FindVehicleDetailsByVinRequest = {};
                 Object.keys(args).forEach(arg => {
                     FindVehicleDetailsByVinRequest[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByVinRequest'.replace(/Request/g, ''), {FindVehicleDetailsByVinRequest})
+                });
+                let res = await clientApp('FindVehicleDetailsByVinRequest'.replace(/Request/g, ''), {FindVehicleDetailsByVinRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -62,19 +76,9 @@ var myService = {
                 let FindVehicleDetailsByWorkOrderIdRequest = {};
                 Object.keys(args).forEach(arg => {
                     FindVehicleDetailsByWorkOrderIdRequest[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByWorkOrderIdRequest'.replace(/Request/g, ''), {FindVehicleDetailsByWorkOrderIdRequest})
-                let attributes = {};
-                res.return.attributes = attributes;
-                return res.return;
-            },
-            FindVehicleDetailsByCustomerNameRequest: async function (args) {
-                console.log('FindVehicleDetailsByCustomerNameRequest');
-                let FindVehicleDetailsByCustomerNameRequest = {};
-                Object.keys(args).forEach(arg => {
-                    FindVehicleDetailsByCustomerNameRequest[arg] = args[arg];
-                })
-                let res = await clientApp('FindVehicleDetailsByCustomerNameRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerNameRequest})
+                });
+                FindVehicleDetailsByWorkOrderIdRequest = await fillEmpty(FindVehicleDetailsByWorkOrderIdRequest);
+                let res = await clientApp('FindVehicleDetailsByWorkOrderIdRequest'.replace(/Request/g, ''), {FindVehicleDetailsByWorkOrderIdRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -85,7 +89,8 @@ var myService = {
                 Object.keys(args).forEach(arg => {
                     FindVehicleDetailsByCustomerIdRequest[arg] = args[arg];
                 })
-                let res = await clientApp('FindVehicleDetailsByCustomerIdRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerIdRequest})
+                FindVehicleDetailsByCustomerIdRequest = await fillEmpty(FindVehicleDetailsByCustomerIdRequest);
+                let res = await clientApp('FindVehicleDetailsByCustomerIdRequest'.replace(/Request/g, ''), {FindVehicleDetailsByCustomerIdRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -97,7 +102,7 @@ var myService = {
                     GetPartDetailsRequest[arg] = args[arg];
                 })
                 GetPartDetailsRequest = await fillEmpty(GetPartDetailsRequest);
-                let res = await clientApp('GetPartDetailsRequest'.replace(/Request/g, ''), {GetPartDetailsRequest})
+                let res = await clientApp('GetPartDetailsRequest'.replace(/Request/g, ''), {GetPartDetailsRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -110,7 +115,7 @@ var myService = {
                     CreateWorkOrderRequest[arg] = args[arg];
                 })
                 CreateWorkOrderRequest = await fillEmpty(CreateWorkOrderRequest);
-                let res = await clientApp('CreateWorkOrderRequest'.replace(/Request/g, ''), {CreateWorkOrderRequest})
+                let res = await clientApp('CreateWorkOrderRequest'.replace(/Request/g, ''), {CreateWorkOrderRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
@@ -120,24 +125,18 @@ var myService = {
                 let UpdateWorkOrderRequest = {};
                 Object.keys(args).forEach(arg => {
                     UpdateWorkOrderRequest[arg] = args[arg];
-                })
+                });
                 UpdateWorkOrderRequest = await fillEmpty(UpdateWorkOrderRequest);
-                let res = await clientApp('UpdateWorkOrderRequest'.replace(/Request/g, ''), {UpdateWorkOrderRequest})
+                let res = await clientApp('UpdateWorkOrderRequest'.replace(/Request/g, ''), {UpdateWorkOrderRequest});
                 let attributes = {};
                 res.return.attributes = attributes;
                 return res.return;
             },
             GetSystemNameRequest: async function (args) {
                 console.log('GetSystemNameRequest');
-                let GetSystemNameRequest = {};
-                Object.keys(args).forEach(arg => {
-                    GetSystemNameRequest[arg] = args[arg];
-                })
-                GetSystemNameRequest = await fillEmpty(GetSystemNameRequest);
-                let res = await clientApp('GetSystemNameRequest'.replace(/Request/g, ''), {GetSystemNameRequest})
+                //let res = await clientApp('FindVehicleDetailsByVinRequest', args)
                 let attributes = {};
-                res.return.attributes = attributes;
-                return res.return;
+                return 'DMS 1C';
             },
         }
     }

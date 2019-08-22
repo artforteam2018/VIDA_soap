@@ -545,21 +545,33 @@ function replacer(xml) {
     let prefix = [
         ['GetInterfaceCapabilitiesResult'],
         ['VehicleDetailsResult'],
+        ['MultiVehicleDetailsResult'],
+        ['VehicleHistoryResult'],
+        ['CustomerDetailsResult'],
+        ['VehicleHistoryList'],
+        ['CreateWorkOrderResult'],
         ['PartDetailsResult'],
         ['Result'],
         ['IsTransactionOk'],
         ['VIN'],
         ['LicenseNumber'],
+        ['CustomerList'],
         ['Customer'],
         ['Owner'],
         ['Address'],
+        ['Email'],
         ['Telephone'],
         ['WorkOrderInfo'],
-        ['OperationList', 'm:PartDetailsResult'],
-        ['PartsList', 'm:PartDetailsResult'],
-        ['ItemId', 'm:PartDetailsResult'],
-        ['ItemQuantity', 'm:PartDetailsResult'],
-        ['Price', 'm:PartDetailsResult']
+        ['OperationList'],
+        ['PartsList'],
+        ['ItemId'],
+        ['Mileage', 'm:VehicleHistoryResult'],
+        ['ItemQuantity'],
+        ['Price'],
+        ['PackageList'],
+        //['PackageLine'],
+
+        ['GetSystemNameResponse']
     ]
     prefix.map(pref => {
         if (xml.match(/<soap:Body><(.*) xmlns/) !== null && xml.match(/<soap:Body><(.*) xmlns/)[1] !== null) {

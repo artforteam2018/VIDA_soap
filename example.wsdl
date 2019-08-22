@@ -666,11 +666,24 @@
                     <xs:element name="workOrderId" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="CustomerDetailsResult">
+                <xs:sequence>
+                    <xs:element ref="tns:Result"/>
+                    <xs:element ref="tns:CustomerList"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:simpleType name="Date">
                 <xs:restriction base="xs:string">
                     <xs:pattern value="(19|20)[0-9][0-9](0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
                 </xs:restriction>
             </xs:simpleType>
+            <xs:complexType name="FindCustomerDetailsByCustomerId">
+                <xs:sequence>
+                    <xs:element ref="tns:UserInfo"/>
+                    <xs:element ref="tns:Properties"/>
+                    <xs:element ref="tns:CustomerId"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="FindVehicleDetailsByCustomerId">
                 <xs:sequence>
                     <xs:element ref="tns:UserInfo"/>
@@ -678,11 +691,12 @@
                     <xs:element ref="tns:CustomerId"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="FindVehicleDetailsByCustomerName">
+            <xs:complexType name="FindVehicleDetailsByCustomerNameRequest">
                 <xs:sequence>
                     <xs:element ref="tns:UserInfo"/>
                     <xs:element ref="tns:Properties"/>
-                    <xs:element ref="tns:CustomerName"/>
+                    <xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="LastName" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="FindVehicleDetailsByLicenseNumberRequest">
@@ -721,7 +735,7 @@
                     <xs:element ref="tns:UserInfo"/>
                     <xs:element ref="tns:Properties"/>
                     <xs:element ref="tns:CustomerId" minOccurs="0"/>
-                    <xs:element name="part" type="tns:Parts" minOccurs="0" maxOccurs="20"/>
+                    <xs:element name="part" type="tns:Parts" minOccurs="0" maxOccurs="500"/>
                     <xs:element name="operation" type="tns:Operation" minOccurs="0" maxOccurs="20"/>
                     <xs:element name="package" type="tns:PackageInfo" minOccurs="0"/>
                 </xs:sequence>
@@ -1082,7 +1096,7 @@
             <xs:element name="FindVehicleDetailsByCustomerName">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="FindVehicleDetailsByCustomerNameRequest" type="tns:FindVehicleDetailsByCustomerName"/>
+                        <xs:element name="FindVehicleDetailsByCustomerNameRequest" type="tns:FindVehicleDetailsByCustomerNameRequest"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1149,17 +1163,31 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="GetSystemName">
+            <xs:element name="GetVehicleHistoryByVin">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="GetSystemNameRequest" type="tns:GetSystemNameRequest"/>
+                        <xs:element name="GetVehicleHistoryByVinRequest" type="xs:all"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="GetSystemNameResponse">
+            <xs:element name="GetVehicleHistoryByVinResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="return" type="xs:string"/>
+                        <xs:element name="return" type="tns:VehicleHistory"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindCustomerDetailsByCustomerId">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FindCustomerDetailsByCustomerIdRequest" type="tns:FindCustomerDetailsByCustomerId"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FindCustomerDetailsByCustomerIdResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:CustomerDetailsResult"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1219,11 +1247,17 @@
     <message name="UpdateWorkOrderResponseMessage">
         <part name="parameters" element="tns:UpdateWorkOrderResponse"/>
     </message>
-    <message name="GetSystemNameRequestMessage">
-        <part name="parameters" element="tns:GetSystemName"/>
+    <message name="GetVehicleHistoryByVinRequestMessage">
+        <part name="parameters" element="tns:GetVehicleHistoryByVin"/>
     </message>
-    <message name="GetSystemNameResponseMessage">
-        <part name="parameters" element="tns:GetSystemNameResponse"/>
+    <message name="GetVehicleHistoryByVinResponseMessage">
+        <part name="parameters" element="tns:GetVehicleHistoryByVinResponse"/>
+    </message>
+    <message name="FindCustomerDetailsByCustomerIdRequestMessage">
+        <part name="parameters" element="tns:FindCustomerDetailsByCustomerId"/>
+    </message>
+    <message name="FindCustomerDetailsByCustomerIdResponseMessage">
+        <part name="parameters" element="tns:FindCustomerDetailsByCustomerIdResponse"/>
     </message>
     <portType name="DmsServicePortType">
         <operation name="GetInterfaceCapabilitiesRequest">
@@ -1262,9 +1296,13 @@
             <input message="tns:UpdateWorkOrderRequestMessage"/>
             <output message="tns:UpdateWorkOrderResponseMessage"/>
         </operation>
-        <operation name="GetSystemName">
-            <input message="tns:GetSystemNameRequestMessage"/>
-            <output message="tns:GetSystemNameResponseMessage"/>
+        <operation name="GetVehicleHistoryByVin">
+            <input message="tns:GetVehicleHistoryByVinRequestMessage"/>
+            <output message="tns:GetVehicleHistoryByVinResponseMessage"/>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerId">
+            <input message="tns:FindCustomerDetailsByCustomerIdRequestMessage"/>
+            <output message="tns:FindCustomerDetailsByCustomerIdResponseMessage"/>
         </operation>
     </portType>
     <binding name="DmsServiceSoapBinding" type="tns:DmsServicePortType">
@@ -1350,8 +1388,17 @@
                 <soapbind:body use="literal"/>
             </output>
         </operation>
-        <operation name="GetSystemName">
-            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemName"/>
+        <operation name="GetVehicleHistoryByVin">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetVehicleHistoryByVin"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerId">
+            <soapbind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindCustomerDetailsByCustomerId"/>
             <input>
                 <soapbind:body use="literal"/>
             </input>
@@ -1443,8 +1490,17 @@
                 <soap12bind:body use="literal"/>
             </output>
         </operation>
-        <operation name="GetSystemName">
-            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetSystemName"/>
+        <operation name="GetVehicleHistoryByVin">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:GetVehicleHistoryByVin"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="FindCustomerDetailsByCustomerId">
+            <soap12bind:operation style="document" soapAction="http://www.volvocars.com/namespaces/vadis2004/integration/dms/interface#DmsService:FindCustomerDetailsByCustomerId"/>
             <input>
                 <soap12bind:body use="literal"/>
             </input>
