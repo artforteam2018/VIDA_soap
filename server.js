@@ -1,3 +1,4 @@
+try {
 const express = require('express');
 const bodyParser = require('body-parser');
 const soap = require('soap');
@@ -173,3 +174,11 @@ app.listen(8001, function () {
         console.log('server initialized');
     });
 });
+} catch (e) {
+		var EventLogger = require('node-windows').EventLogger;
+
+var log = new EventLogger('NodeJS VIDA SOAP');
+
+log.info('Basic information.');
+log.error(e);
+}

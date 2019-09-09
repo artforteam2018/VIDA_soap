@@ -1,3 +1,1 @@
-:serv
-node server
-goto serv
+node index

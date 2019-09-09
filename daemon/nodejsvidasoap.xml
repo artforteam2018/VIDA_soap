@@ -4,11 +4,10 @@
 	<description>The nodejs.org SOAP service</description>
 	<executable>C:\Program Files\nodejs\node.exe</executable>
 	<logmode>rotate</logmode>
-	<argument>--harmony</argument>
 	<argument>--max_old_space_size=4096</argument>
-	<argument>C:\Users\timmi\Documents\GitHub\VIDA_soap\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>C:\Users\wa_support\Documents\GitHub\VIDA_soap\node_modules\node-windows\lib\wrapper.js</argument>
 	<argument>--file</argument>
-	<argument>C:\Users\timmi\Documents\GitHub\VIDA_soap\server.js</argument>
+	<argument>C:\Users\wa_support\Documents\GitHub\VIDA_soap\server.js</argument>
 	<argument>--log</argument>
 	<argument>NodeJS VIDA SOAP wrapper</argument>
 	<argument>--grow</argument>
@@ -22,5 +21,5 @@
 	<argument>--stopparentfirst</argument>
 	<argument>undefined</argument>
 	<stoptimeout>30sec</stoptimeout>
-	<workingdirectory>C:\Users\timmi\Documents\GitHub\VIDA_soap</workingdirectory>
+	<workingdirectory>C:\Users\wa_support\Documents\GitHub\VIDA_soap</workingdirectory>
 </service>
