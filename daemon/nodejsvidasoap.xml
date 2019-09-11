@@ -2,7 +2,7 @@
 	<id>nodejsvidasoap.exe</id>
 	<name>NodeJS VIDA SOAP</name>
 	<description>The nodejs.org SOAP service</description>
-	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<executable>C:\Users\wa_support\Documents\GitHub\VIDA_soap\VIDA_soap.exe</executable>
 	<logmode>rotate</logmode>
 	<argument>--max_old_space_size=4096</argument>
 	<argument>C:\Users\wa_support\Documents\GitHub\VIDA_soap\node_modules\node-windows\lib\wrapper.js</argument>
