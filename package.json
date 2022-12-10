@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "node-windows": "^0.1.14",
     "soap": "^0.27.1"
   }
